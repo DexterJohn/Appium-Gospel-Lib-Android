@@ -146,7 +146,7 @@ public class GospelStart {
         //File appDir = new File(classpathRoot, "..\\..\\..\\..\\Selenium");
         //MAC Path
         File appDir = new File(classpathRoot, "../../../Selenium");
-        File app = new File(appDir, "gospel-library-release-32400-20150310-1646.apk");
+        File app = new File(appDir, "gospel-library-release-32600-20150316-2045.apk");
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("platformName", "Android");
         
@@ -161,7 +161,12 @@ public class GospelStart {
         // Android Emulator
         //capabilities.setCapability("deviceName","Android Emulator");
         //Samsung Galaxy Note 4 
-        capabilities.setCapability("deviceName","751bc6f2");
+        //capabilities.setCapability("deviceName","751bc6f2");
+        
+        //Nexus 4 
+        capabilities.setCapability("deviceName","0074a44f54c7289b");
+        
+        
         
         capabilities.setCapability("automationName","selendroid");
         capabilities.setCapability("newCommandTimeout","600");
@@ -182,7 +187,7 @@ public class GospelStart {
 		firstPages();
 		//justForTesting();
 		
-		//ScriptuesOldTestamentTest();
+		ScriptuesOldTestamentTest();
 		//ScriptuesNewTestamentTest();
 		//ScriptuesBookOfMormon();
 		//ScripturesDoctrineAndCovenants();
@@ -191,7 +196,7 @@ public class GospelStart {
 		//DownloadGeneralConference();
 		//DownloadAllPresidents();
 		//BookMarkSimpleTest();
-		BookMarkUpdateTest();
+		//BookMarkUpdateTest();
 		//BookMarkCustomNameTest();
 		//ScreensSimpleTest();
 		//HistorySimpleTest();
@@ -388,7 +393,7 @@ public class GospelStart {
 		Thread.sleep(7000);
 
 		//First Page
-		checkTextByXpath("StartPageMiddleTitle", "New in version 3.2.4");
+		checkTextByXpath("StartPageMiddleTitle", "New in version 3.2.6");
 		checkTextByID("StartPageText", "Fixed various bugs and stability issues");
 		clickButtonByID("BottomButton");
 		Thread.sleep(4000);
