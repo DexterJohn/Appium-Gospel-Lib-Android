@@ -42,6 +42,9 @@ import java.util.Properties;
 
 
 
+
+
+
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 //import io.appium.java_client.android.AndroidDriver;
@@ -51,6 +54,9 @@ import io.appium.java_client.MobileElement;
 //import io.selendroid.SelendroidDriver;
 import io.selendroid.SelendroidKeys;
 //import io.selendroid.exceptions.NoSuchElementException;
+
+
+
 
 
 
@@ -93,8 +99,10 @@ import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.Keys;
 //import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.ScreenOrientation;
 //import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -146,14 +154,14 @@ public class GospelStart {
         //File appDir = new File(classpathRoot, "..\\..\\..\\..\\Selenium");
         //MAC Path
         File appDir = new File(classpathRoot, "../../../Selenium");
-        File app = new File(appDir, "gospel-library-release-32400-20150310-1646.apk");
+        File app = new File(appDir, "gospel-library-release-32600-20150316-2045.apk");
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("platformName", "Android");
         
         // ************** Devices ***************
         
         //Samsung Galaxy Tab
-        //capabilities.setCapability("deviceName","41031b0b89e93163");
+        capabilities.setCapability("deviceName","41031b0b89e93163");
         //HTC Nexus 9
         //capabilities.setCapability("deviceName","HT4ASJT02851");
         //Nexus 5
@@ -161,7 +169,7 @@ public class GospelStart {
         // Android Emulator
         //capabilities.setCapability("deviceName","Android Emulator");
         //Samsung Galaxy Note 4 
-        capabilities.setCapability("deviceName","751bc6f2");
+        //capabilities.setCapability("deviceName","751bc6f2");
         
         capabilities.setCapability("automationName","selendroid");
         capabilities.setCapability("newCommandTimeout","600");
@@ -176,7 +184,7 @@ public class GospelStart {
     }	
 
 	
-    
+    /*
 	@Test
 	public void simpleTest() throws Exception {
 		firstPages();
@@ -191,7 +199,7 @@ public class GospelStart {
 		//DownloadGeneralConference();
 		//DownloadAllPresidents();
 		//BookMarkSimpleTest();
-		BookMarkUpdateTest();
+		//BookMarkUpdateTest();
 		//BookMarkCustomNameTest();
 		//ScreensSimpleTest();
 		//HistorySimpleTest();
@@ -205,24 +213,65 @@ public class GospelStart {
 		//NotesSearchTest();
 		//RemoveAllRemoveSingleTest();
 		//CreateHighlightSimpleTest();
-		//CreateHighlightAllColors();
+		CreateHighlightAllColors();
 		
 		
 		//Bug in selendroid - test should pass but it needs work
 		//SearchAutoFillAndHistoryTest();
 		
 	}
-	
+	*/
 
 	public void justForTesting() throws Exception {
-		Thread.sleep(1000);
-		goToChapter("OldTestament", "Genesis", "Chapter9");
-		Thread.sleep(1000);
+		int myCheck;
+		int myCounter = 1;
+		driver.rotate(ScreenOrientation.LANDSCAPE);
+		Thread.sleep(2000);
+		clickButtonByXpath("Scriptures");
+		Thread.sleep(2000);
+		//Select the Scripture book
+		clickButtonByXpath("BookOfMormon");
+		
+		
+		//Check for download popup then wait for it to disappear
+		waitForElementToDisappearID("DownloadAlertCancel", 500, "BookOfMormon" );
 
+		//flickUpOrDown(-110);	
+		//driver.swipe(400 , 600, 400, 100, 1000);
+		
+		
+		//scrollDownDistance(110);
+		
+		checkTextViewByXpath("Alma");
+		
+		
+		
+		myCheck = checkElementXpathReturn("Alma");
+		//System.out.println("Check: " + myCheck);
+		
+		
+		//scrollToElement("Alma");
+		//if (myCheck == 0){
+		//	scrollToElement("Alma");
+		//}
+		
+		while ((myCheck == 0) && (myCounter < 5 )) {
+			scrollDownDistance(110);
+			myCheck = checkElementXpathReturn("Alma");
+			myCounter++;
+			System.out.println("Counter " + myCounter);
+		}
+		
+		clickButtonByXpath("Alma");
+			
+		
+		Thread.sleep(1000);
+		clickButtonByXpath("Chapter2");
+		Thread.sleep(20000);
 	}
 		
 	
-	/*
+	
 	
     @Rule
     public Retry retry = new Retry(3);
@@ -371,7 +420,7 @@ public class GospelStart {
 		CreateHighlightAllColors();
 	}
 	
-	*/
+	
 	
 //**************************************************************
 //**************** Start of tests ******************************
@@ -388,7 +437,7 @@ public class GospelStart {
 		Thread.sleep(7000);
 
 		//First Page
-		checkTextByXpath("StartPageMiddleTitle", "New in version 3.2.4");
+		checkTextByXpath("StartPageMiddleTitle", "New in version 3.2.6");
 		checkTextByID("StartPageText", "Fixed various bugs and stability issues");
 		clickButtonByID("BottomButton");
 		Thread.sleep(4000);
@@ -415,6 +464,7 @@ public class GospelStart {
 				+ " Would you like to setup annotation sync now?");
 		clickButtonByID("BottomButton");
 		Thread.sleep(5000);
+		driver.rotate(ScreenOrientation.LANDSCAPE);
 	}
 
 	/** ScriptuesOldTestamentTest()
@@ -555,7 +605,7 @@ public class GospelStart {
 		sendTextbyID("Username", "zautomobile1");
 		sendTextbyID("Password", "ldsM0b1l3");
 		clickButtonByID("SignInButton");
-		Thread.sleep(4000);
+		Thread.sleep(5000);
 		//ToDo need a check to see if the login was successful. 
 		
 		clickButtonByID("OKButton");
@@ -567,20 +617,27 @@ public class GospelStart {
 		//Go back to the home page
 		clickButtonByID("Home");
 		
+		
+		//Sleeping for a while to see if the login works. 
+		//Need a better way to do this.
 		Thread.sleep(2000);
+		
+		
 		clickButtonByXpath("Notes");
 		//Need a better way to do this, the sleep is waiting for the download to complete. 
 		Thread.sleep(2000);
 		
 		clickButtonByXpath("All");
 		Thread.sleep(2000);
-		checkNotesByID("MarkedSource", "Alma 1:1");
-		checkNotesByID("MarkedSource", "Moses 6:6");
-		checkNotesByID("MarkedTitle", "Entry 1");
-		checkNotesByID("MarkedText", "Journal Entry number 1");
 		checkNotesByID("MarkedTitle", "My Tag Test");
 		checkNotesByID("MarkedText", "Goat Tag test");
 		checkNotesByID("MarkedSource", "- Dec 18, 2014");
+		checkNotesByID("MarkedTitle", "Entry 1");
+		checkNotesByID("MarkedText", "Journal Entry number 1");
+		checkNotesByID("MarkedSource", "Moses 6:6");
+		checkNotesByID("MarkedSource", "Alma 1:1");
+
+
 		
 		
 		clickSpinnerItem("NotesSpinner");
@@ -1109,9 +1166,9 @@ public class GospelStart {
 	 * @throws Exception
 	 */
 	public void FavoritesSimpleTest() throws Exception {
-		Thread.sleep(1000);
-		clickButtonByXpath("Favorites"); 
 		Thread.sleep(4000);
+		clickButtonByXpath("Favorites"); 
+		Thread.sleep(10000);
 		checkTextByXpath("GospelArtBook", "Gospel Art Book");
 		checkTextByXpath("BookOfMormon", "Book of Mormon");
 		checkTextByXpath("April2014", "April 2014");
@@ -1181,22 +1238,22 @@ public class GospelStart {
 		
 		clickButtonByXpath("MormonMessages");
 		Thread.sleep(1000);
-		checkTextViewByXpath("You Never Know");
-		checkTextViewByXpath("The Hope of God's Light");
-		checkTextViewByXpath("The Savior Wants to Forgive");
-		checkTextViewByXpath("True Christianity");
-		checkTextViewByXpath("Abide with Me");
+		checkTextViewByXpath("You Never Know (8:54)");
+		checkTextViewByXpath("The Hope of God's Light (6:46)");
+		checkTextViewByXpath("The Savior Wants to Forgive (5:50)");
+		checkTextViewByXpath("True Christianity (3:04)");
+		checkTextViewByXpath("Abide with Me (3:09)");
 		
 		pressBackKey();
 		Thread.sleep(1000);
 		
 		clickButtonByXpath("BibleVideosLifeofChrist");
 		Thread.sleep(1000);
-		checkTextViewByXpath("The Feeding of the 5,000");
-		checkTextViewByXpath("Wherefore Didst Thou Doubt?");
-		checkTextViewByXpath("Christ's Authority is Questioned");
-		checkTextViewByXpath("Widow Of Nain");
-		checkTextViewByXpath("I Have Kept the Faith");
+		//checkTextViewByXpath("An Angel Foretells Christ's Birth to Mary (4:07)");
+		checkTextViewByXpath("Mary and Elisabeth Rejoice Together (5:06)");
+		checkTextViewByXpath("The Nativity (7:52)");
+		checkTextViewByXpath("The Baptism of Jesus (2:54)");
+		checkTextViewByXpath("Jesus Turns Water into Wine (2:26)");
 		
 		//Go back to the home page
 		clickButtonByID("Home");
@@ -1223,14 +1280,14 @@ public class GospelStart {
 		clickButtonByXpathTitleNameNoDownload("Old Testament");
 		clickButtonByXpathTitleNameNoDownload("New Testament");
 		clickButtonByXpathTitleNameNoDownload("Pearl of Great Price");
-		scrollDown("Pearl of Great Price");
-		clickButtonByXpathTitleNameNoDownload("Bible Photographs");
+		//scrollDown("Pearl of Great Price");
+		//clickButtonByXpathTitleNameNoDownload("Bible Photographs");
 		clickButtonByID("DoneCollection");
 		Thread.sleep(1000);
 		checkTextViewByXpath("Old Testament");
 		checkTextViewByXpath("New Testament");
 		checkTextViewByXpath("Pearl of Great Price");
-		checkTextViewByXpath("Bible Photographs");
+		//checkTextViewByXpath("Bible Photographs");
 		clickButtonByID("DoneCollection");
 		clickButtonByID("DoneCollection");
 		Thread.sleep(1000);
@@ -1240,7 +1297,7 @@ public class GospelStart {
 		checkTextViewByXpath("Old Testament");
 		checkTextViewByXpath("New Testament");
 		checkTextViewByXpath("Pearl of Great Price");
-		checkTextViewByXpath("Bible Photographs");
+		//checkTextViewByXpath("Bible Photographs");
 		Thread.sleep(1000);
 		
 		//Edit the Collection
@@ -1254,23 +1311,23 @@ public class GospelStart {
 		checkNoElementXpathName("New Testament");
 		checkTextViewByXpath("Old Testament");
 		checkTextViewByXpath("Pearl of Great Price");
-		checkTextViewByXpath("Bible Photographs");
+		//checkTextViewByXpath("Bible Photographs");
 		
 		//Edit Add an item
 		pressMenuKey();
 		Thread.sleep(1000);
 		clickButtonByXpath("EditCollection");
 		clickButtonByID("AddCollection");
-		clickButtonByXpathTitleNameNoDownload("Liahona");
+		clickButtonByXpathTitleNameNoDownload("General Conference");
 		Thread.sleep(1000);
-		clickButtonByXpathTitleNameNoDownload("December 2014");
+		clickButtonByXpathTitleNameNoDownload("April 2014");
 		clickButtonByID("DoneCollection");
 		clickButtonByID("DoneCollection");
 		Thread.sleep(1000);
 		checkTextViewByXpath("Old Testament");
 		checkTextViewByXpath("Pearl of Great Price");
-		checkTextViewByXpath("Bible Photographs");
-		checkTextViewByXpath("December 2014");
+		//checkTextViewByXpath("Bible Photographs");
+		checkTextViewByXpath("April 2014");
 		
 		//Delete the Collection
 		pressMenuKey();
@@ -1376,12 +1433,12 @@ public class GospelStart {
 		clickButtonByID("DoneCollection");
 		Thread.sleep(1000);
 		clickButtonByID("AddCollection");
-		clickButtonByXpathTitleNameNoDownload("Music");
+		clickButtonByXpathTitleNameNoDownload("Sunday School");
 		Thread.sleep(1000);
-		clickButtonByXpathTitleNameNoDownload("Hymns of The Church of Jesus Christ of Latter-day Saints");
+		clickButtonByXpathTitleNameNoDownload("New Testament Class Member Study Guide");
 		clickButtonByID("DoneCollection");
 		checkTextViewByXpath("April 2014");
-		checkTextViewByXpath("Hymns of The Church of Jesus Christ of Latter-day Saints");
+		checkTextViewByXpath("New Testament Class Member Study Guide");
 		clickButtonByID("DoneCollection");
 		clickButtonByID("DoneCollection");
 		Thread.sleep(1000);
@@ -1421,7 +1478,7 @@ public class GospelStart {
 		
 		clickButtonByXpathTitleNameNoDownload("Collection3");
 		checkTextViewByXpath("April 2014");
-		checkTextViewByXpath("Hymns of The Church of Jesus Christ of Latter-day Saints");
+		checkTextViewByXpath("New Testament Class Member Study Guide");
 		Thread.sleep(1000);
 		//Go back to the home page
 		clickButtonByID("Home");
@@ -1722,12 +1779,13 @@ public class GospelStart {
 	 */
 	public void RemoveAllRemoveSingleTest() throws Exception {
 		Thread.sleep(1000);
-		scrollDown("Family");
+		scrollDown2("Family", -500 );
+		//scrollDown("Family");
 		Thread.sleep(1000);
-		clickButtonByXpath("MelchizedekPriesthood"); 
+		//clickButtonByXpath("MelchizedekPriesthood"); 
 		
 		//Download the Family Guidebook
-		Thread.sleep(3000);
+		//Thread.sleep(3000);
 		clickButtonByXpathTitleNameNoDownload("Family Guidebook");
 		Thread.sleep(1000);
 		
@@ -1740,12 +1798,13 @@ public class GospelStart {
 		
 		//Downloaded Items
 		Assert.assertTrue(checkElementTextViewReturn("Family Guidebook"));
+		Assert.assertTrue(checkElementTextViewReturn("Gospel Art Book"));
 		//Not Downloaded
 		Assert.assertFalse(checkElementTextViewReturn("Handbook 2: Administering the Church"));
 		Assert.assertFalse(checkElementTextViewReturn("Ezra Taft Benson"));
-		Assert.assertFalse(checkElementTextViewReturn("October 2014"));
-		Assert.assertFalse(checkElementTextViewReturn("Duties and Blessings of the Priesthood: Basic Manual for Priesthood Holders, Part A"));
-		Assert.assertFalse(checkElementTextViewReturn("Duties and Blessings of the Priesthood: Basic Manual for Priesthood Holders, Part B"));
+		Assert.assertFalse(checkElementTextViewReturn("Articles of Faith"));
+		Assert.assertFalse(checkElementTextViewReturn("True to the Faith"));
+		Assert.assertFalse(checkElementTextViewReturn("God Loveth His Children"));
 		Thread.sleep(1000);
 		
 		//Show all the items
@@ -1754,11 +1813,13 @@ public class GospelStart {
 		clickButtonByXpath("ShowItemsNotDownloaded");
 		
 		//Download the rest of the items in that page
-		clickButtonByXpathTitleNameNoDownload("Handbook 2: Administering the Church");
-		clickButtonByXpathTitleNameNoDownload("Ezra Taft Benson");
-		clickButtonByXpathTitleNameNoDownload("October 2014");
-		clickButtonByXpathTitleNameNoDownload("Duties and Blessings of the Priesthood: Basic Manual for Priesthood Holders, Part A");
-		clickButtonByXpathTitleNameNoDownload("Duties and Blessings of the Priesthood: Basic Manual for Priesthood Holders, Part B");
+		//clickButtonByXpathTitleNameNoDownload("Handbook 2: Administering the Church");
+		//Thread.sleep(1000);
+		//clickButtonByXpathTitleNameNoDownload("Ezra Taft Benson");
+		//Thread.sleep(1000);
+		clickButtonByXpathTitleNameNoDownload("Articles of Faith");
+		clickButtonByXpathTitleNameNoDownload("True to the Faith");
+		clickButtonByXpathTitleNameNoDownload("God Loveth His Children");
 		Thread.sleep(5000);
 		
 		//Hide Items that have not been downloaded (There shouldn't be any)
@@ -1769,28 +1830,30 @@ public class GospelStart {
 		
 		//Check all of the items
 		Assert.assertTrue(checkElementTextViewReturn("Family Guidebook"));
-		Assert.assertTrue(checkElementTextViewReturn("Handbook 2: Administering the Church"));
-		Assert.assertTrue(checkElementTextViewReturn("Ezra Taft Benson"));
-		Assert.assertTrue(checkElementTextViewReturn("October 2014"));
-		Assert.assertTrue(checkElementTextViewReturn("Duties and Blessings of the Priesthood: Basic Manual for Priesthood Holders, Part A"));
-		Assert.assertTrue(checkElementTextViewReturn("Duties and Blessings of the Priesthood: Basic Manual for Priesthood Holders, Part B"));
+		Assert.assertTrue(checkElementTextViewReturn("Gospel Art Book"));
+		Assert.assertTrue(checkElementTextViewReturn("Articles of Faith"));
+		Assert.assertTrue(checkElementTextViewReturn("True to the Faith"));
+		Assert.assertTrue(checkElementTextViewReturn("God Loveth His Children"));
 		
 		//Remove some of the items by long pressing on an item
-		longPressByTextView("Ezra Taft Benson");
-		clickButtonByXpathTitleNameNoDownload("Remove");
-		longPressByTextView("October 2014");
+		//longPressByTextView("Ezra Taft Benson");
+		//clickButtonByXpathTitleNameNoDownload("Remove");
+		longPressByTextView("Articles of Faith");
 		clickButtonByXpathTitleNameNoDownload("Remove");
 		
 		//Check the visible items
 		Assert.assertTrue(checkElementTextViewReturn("Family Guidebook"));
-		Assert.assertTrue(checkElementTextViewReturn("Handbook 2: Administering the Church"));
-		Assert.assertFalse(checkElementTextViewReturn("Ezra Taft Benson"));
-		Assert.assertFalse(checkElementTextViewReturn("October 2014"));
-		Assert.assertTrue(checkElementTextViewReturn("Duties and Blessings of the Priesthood: Basic Manual for Priesthood Holders, Part A"));
-		Assert.assertTrue(checkElementTextViewReturn("Duties and Blessings of the Priesthood: Basic Manual for Priesthood Holders, Part B"));
+		Assert.assertTrue(checkElementTextViewReturn("Gospel Art Book"));
+		Assert.assertTrue(checkElementTextViewReturn("True to the Faith"));
+		Assert.assertTrue(checkElementTextViewReturn("God Loveth His Children"));
+
+		Assert.assertFalse(checkElementTextViewReturn("Articles of Faith"));
+
 		
-		
+		//Melchizddek Preisthood is no longer under family
+		//TODO: Remove all
 		//Remove all items
+		/*
 		pressMenuKey();
 		clickButtonByXpath("CatalogOptions");
 		clickButtonByXpathTitleNameNoDownload("Remove All in Melchizedek Priesthood");
@@ -1807,7 +1870,7 @@ public class GospelStart {
 		clickButtonByXpath("CatalogOptions");
 		clickButtonByXpath("ShowItemsNotDownloaded");
 		Thread.sleep(1000);
-		
+		*/
 		
 		//Go back to the home page
 		clickButtonByID("Home");
@@ -2164,6 +2227,7 @@ public class GospelStart {
 		
 
 		pressBackKey();
+		Thread.sleep(3000);
 		clickButtonByXpath("Chapter10");
 		
 		Thread.sleep(2000);
@@ -2243,6 +2307,7 @@ public class GospelStart {
 	 * @param textToCheck - text to check
 	 */
 	private void checkTextByXpath(String textElement, String textToCheck ) {
+		//System.out.println("Text To Check: " + textToCheck);
 		Assert.assertEquals(driver.findElement(By.xpath(this.prop.getProperty(textElement))).getText(),(textToCheck));	
 	}
 
@@ -2272,21 +2337,34 @@ public class GospelStart {
 	 */
 	private void checkTextViewByXpath(String textToCheck) {
 		int myCounter;
+		int myWhileCounter = 1;
 		int myTextCheck = 0;
 		//List<String> str = new ArrayList<String>();
-		List<WebElement> options = driver.findElements(By.xpath("//TextView"));
-		myCounter = options.size() - 1;
-		//System.out.println(myCounter);
-		//System.out.println(options.size());
-		for(int i = 0;i <= myCounter; i++) {
-			String str = options.get(i).getText();
-			//System.out.println(i + str);
-			if (str.equals(textToCheck)){
-				Assert.assertEquals(str ,textToCheck);
-				myTextCheck = 1;
+		while ((myWhileCounter < 5) && (myTextCheck == 0)){
+			List<WebElement> options = driver.findElements(By.xpath("//TextView"));
+			myCounter = options.size() - 1;
+			//System.out.println(myCounter);
+			//System.out.println(options.size());
+			for(int i = 0;i <= myCounter; i++) {
+				String str = options.get(i).getText();
+
+				if (str.equals(textToCheck)){
+					Assert.assertEquals(str ,textToCheck);
+					myTextCheck = 1;
+				}
 			}
+			if (myTextCheck == 0) {
+				scrollDownDistance(80);
+				//System.out.println("Scrolling Down: " + myWhileCounter);
+				myWhileCounter++;
+			}
+			
+			
 		}
+
+		
 		// if the text is not found print out the info
+		/*
 		if (myTextCheck == 0) {
 			System.out.println("Text not found: " + textToCheck );
 			System.out.println("In: ");
@@ -2295,6 +2373,7 @@ public class GospelStart {
 				System.out.println(i + str);
 			}
 		}
+		*/
 
 		Assert.assertTrue(myTextCheck == 1 );
 	}
@@ -2387,6 +2466,17 @@ public class GospelStart {
 	private int checkElementXpathReturn(String textElement) {
 		int myReturnStatus = 0;
 		List<WebElement> options= driver.findElements(By.xpath(this.prop.getProperty(textElement)));
+		if (options.isEmpty()) {
+			myReturnStatus = 0;
+			return myReturnStatus;
+		}
+		myReturnStatus = 1;
+		return myReturnStatus;
+	}
+	
+	private int checkElementXpathReturnAllText(String textElement) {
+		int myReturnStatus = 0;
+		List<WebElement> options= driver.findElements(By.xpath(textElement));
 		if (options.isEmpty()) {
 			myReturnStatus = 0;
 			return myReturnStatus;
@@ -2500,18 +2590,30 @@ public class GospelStart {
 	 */
 	private void checkNotesByID(String textElement, String textToCheck) {
 		int myCounter;
+		int myWhileCounter = 1;
 		int myTextCheck = 0;
 		//List<String> str = Arrays.asList("test1", "test2");
-		List<WebElement> options = driver.findElements(By.id(this.prop.getProperty(textElement)));
-		myCounter = options.size() - 1;
-		for(int i = 0;i <= myCounter; i++) {
-			String str = options.get(i).getText();
-			//System.out.println(i + str);
-			if (str.equals(textToCheck)){
-				Assert.assertEquals(str ,textToCheck);
-				myTextCheck = 1;
+		while ((myWhileCounter < 5) && (myTextCheck == 0)){
+			List<WebElement> options = driver.findElements(By.id(this.prop.getProperty(textElement)));
+			myCounter = options.size() - 1;
+			for(int i = 0;i <= myCounter; i++) {
+				String str = options.get(i).getText();
+				//System.out.println(i + str);
+				if (str.equals(textToCheck)){
+					Assert.assertEquals(str ,textToCheck);
+					myTextCheck = 1;
+				} 
 			}
+			if (myTextCheck == 0) {
+				scrollDownDistance(80);
+				//System.out.println("Scrolling Down: " + myWhileCounter);
+				myWhileCounter++;
+			}
+
 		}
+
+	
+		
 		Assert.assertTrue(myTextCheck == 1 );
 		
 	}
@@ -2645,10 +2747,25 @@ public class GospelStart {
 	 * @param textElement - Xpath of the element must be in uiMap
 	 */
 	private void clickButtonByXpath(String textElement ) {
+		int myCheck;
+		int myCounter = 0;
 		WebDriverWait wait = new WebDriverWait(driver, 20);
+
+		
+		//Scroll down if element is not found.
+		myCheck = checkElementXpathReturn(textElement);
+		//System.out.println("Before While loop - Check: " + myCheck);
+		while ((myCheck == 0) && (myCounter < 5 )) {
+			scrollDownDistance(110);
+			myCheck = checkElementXpathReturn(textElement);
+			myCounter++;
+			System.out.println(textElement);
+			System.out.println("Counter " + myCounter);
+			System.out.println("My Check: " + myCheck);
+		}
+		
 		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(this.prop.getProperty(textElement))));
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(this.prop.getProperty(textElement) + "/../download_progress")));
-		
 		driver.findElement(By.xpath(this.prop.getProperty(textElement))).click();
 		
 		//I don't really like this sleep but it seems to be needed 
@@ -2886,6 +3003,7 @@ public class GospelStart {
 	 */
 	private void sendTextbyID(String textElement, String textToSend ) {
 		driver.findElement(By.id(this.prop.getProperty(textElement))).sendKeys(textToSend);
+		driver.hideKeyboard();
 	}
 	
 	/** sendTextbyXpath(String textElement, String textToSend )
@@ -2907,7 +3025,7 @@ public class GospelStart {
 		//Smaller Devices
 		//TouchActions flick = new TouchActions(driver).flick(pages, -1500, 0, 0);
 		//Larger devices - seems to work for larger and smaller devices
-		TouchActions flick = new TouchActions(driver).flick(pages, -2500, 0, 0);
+		TouchActions flick = new TouchActions(driver).flick(pages, -2900, 0, 0);
 		flick.perform();
 	}
 	
@@ -2964,20 +3082,96 @@ public class GospelStart {
 		actions.perform();
 	}
 	
+	
+	private void scrollDown2(String textElement, int distanceMove){
+		int myCheck;
+		int myCounter = 0;
+		textElement = "//*[@value='" + textElement + "']";
+		//WebDriverWait wait = new WebDriverWait(driver, 20);
+
+		//Scroll down if element is not found.
+		myCheck = checkElementXpathReturnAllText(textElement);
+		//System.out.println("Before While loop - Check: " + myCheck);
+		while ((myCheck == 0) && (myCounter < 8 )) {
+			scrollDownDistance2(distanceMove);
+			myCheck = checkElementXpathReturnAllText(textElement);
+			myCounter++;
+			//System.out.println(textElement);
+			//System.out.println("Counter " + myCounter);
+			//System.out.println("My Check: " + myCheck);
+		}
+		
+		driver.findElement(By.xpath(textElement)).click();
+		
+		//I don't really like this sleep but it seems to be needed 
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	private void scrollDownDistance2(int scrollDistance ){
+		TouchActions actions = new TouchActions(driver);
+		/*
+		Dimension dimensions = driver.manage().window().getSize();
+		int screenWidth = dimensions.getWidth();
+		int screenHeight = dimensions.getHeight();
+		
+		System.out.println("Trying to move!");
+		System.out.println("Width: " + screenWidth);
+		System.out.println("Height: " + screenHeight);
+		
+		screenWidth = screenWidth - 10;
+		screenHeight = screenHeight - 10;
+		
+		actions.down(screenWidth, screenHeight);
+		actions.pause(3000);
+		actions.move(screenWidth, screenHeight - scrollDistance);
+		actions.pause(2000);
+		actions.up(screenWidth, screenHeight - scrollDistance);
+		*/
+		actions.flick(driver.findElement(By.id("title")), 0, scrollDistance, 100);
+		
+		//actions.flick(0, -1000);
+		//actions.scroll(0, scrollDistance);
+		
+
+		
+		actions.perform();
+		
+	}
+	
+	
+	
 	/** scrollDownDistance(int scrollDistance )
 	 * Select the first TextView then scroll down
 	 * 
 	 * @param scrollDistance - Distance to scroll
 	 */
 	private void scrollDownDistance(int scrollDistance ){
-		WebElement myElement = driver.findElement(By.xpath("//TextView[3]"));
+		//WebElement myElement = driver.findElement(By.xpath("//TextView[@value='']"));
 		//WebElement myElement = driver.findElement(By.id("pager"));
 		TouchActions actions = new TouchActions(driver);
-		Point p=myElement.getLocation();
-		actions.down(p.x, p.y);
-		actions.move(p.x, p.y - scrollDistance);
-		actions.up(p.x, p.y );
+		//Point p=myElement.getLocation();
+		//actions.down(p.x, p.y);
+		//actions.move(p.x, p.y - scrollDistance);
+		//actions.up(p.x, p.y );
+		//actions.perform();
+		
+		actions.down(1000, 1000);
+		actions.move(1000, 1000 - scrollDistance);
+		actions.up(1000, 1000 - scrollDistance);
 		actions.perform();
+	}
+	
+	private void scrollToElement(String textElement){
+		//WebElement myElement = driver.findElement((By.xpath(this.prop.getProperty(textElement))));
+		driver.scrollTo(textElement);
+		//Actions actions = new Actions(driver);
+		//actions.moveToElement(myElement);
+		//actions.perform();
 	}
 	
 	/** longPressByXpath(String textElement)
@@ -3079,13 +3273,14 @@ public class GospelStart {
 	 * @param textElement - element to check by xpath in uiMap
 	 * @param myTimeOut - number of seconds to wait before giving up
 	 */
-	private void waitForElementToDisappearID(String textElement, int myTimeOut){
+	private void waitForElementToDisappearID(String textElement, int myTimeOut, String itemToClick ){
 		int myCheck; 
 		myCheck = checkElementIDReturn(textElement);
 		if (myCheck ==1){
 			WebDriverWait wait = new WebDriverWait(driver, myTimeOut);
 			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id(this.prop.getProperty(textElement))));
 			clickButtonByID("DownloadAlertOK");
+			clickButtonByXpath(itemToClick);
 		}
 
 	}
@@ -3191,19 +3386,24 @@ public class GospelStart {
 		
 		
 		//Check for download popup then wait for it to disappear
-		waitForElementToDisappearID("DownloadAlertCancel", 500 );
+		waitForElementToDisappearID("DownloadAlertCancel", 500, scriptureName );
 		
 		
 		if (!scriptureName.contentEquals("DoctrineAndCovenants")) {
 			//clickButtonByXpath(bookName);
 			
 			myCheck = checkElementXpathReturn(bookName);
+			//if (myCheck == 0){
+			//	scrollToElement(bookName);
+			//}
+			
 			while ((myCheck == 0) && (myCounter < 5 )) {
 				scrollDownDistance(110);
 				myCheck = checkElementXpathReturn(bookName);
 				myCounter++;
 				System.out.println("Counter " + myCounter);
 			}
+			
 			clickButtonByXpath(bookName);
 			
 		}
