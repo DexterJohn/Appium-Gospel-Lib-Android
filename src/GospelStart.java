@@ -170,6 +170,10 @@ public class GospelStart {
         //capabilities.setCapability("deviceName","Android Emulator");
         //Samsung Galaxy Note 4 
         //capabilities.setCapability("deviceName","751bc6f2");
+
+        //Nexus 4 
+        //capabilities.setCapability("deviceName","0074a44f54c7289b");
+        
         
         capabilities.setCapability("automationName","selendroid");
         capabilities.setCapability("newCommandTimeout","600");
@@ -190,7 +194,7 @@ public class GospelStart {
 		firstPages();
 		//justForTesting();
 		
-		//ScriptuesOldTestamentTest();
+		ScriptuesOldTestamentTest();
 		//ScriptuesNewTestamentTest();
 		//ScriptuesBookOfMormon();
 		//ScripturesDoctrineAndCovenants();
