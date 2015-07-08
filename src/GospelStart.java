@@ -154,7 +154,7 @@ public class GospelStart {
         //File appDir = new File(classpathRoot, "..\\..\\..\\..\\Selenium");
         //MAC Path
         File appDir = new File(classpathRoot, "../../../Selenium");
-        File app = new File(appDir, "gospel-library-release-32600-20150316-2045.apk");
+        File app = new File(appDir, "gospel-library-release-20150706-1930.apk");
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("platformName", "Android");
         
@@ -194,13 +194,13 @@ public class GospelStart {
 		firstPages();
 		//justForTesting();
 		
-		ScriptuesOldTestamentTest();
+		//ScriptuesOldTestamentTest();
 		//ScriptuesNewTestamentTest();
 		//ScriptuesBookOfMormon();
 		//ScripturesDoctrineAndCovenants();
 		//ScripturesPearlOfGreatPrice();
 		//NotesSyncTest();
-		//DownloadGeneralConference();
+		DownloadGeneralConference();
 		//DownloadAllPresidents();
 		//BookMarkSimpleTest();
 		//BookMarkUpdateTest();
@@ -217,7 +217,7 @@ public class GospelStart {
 		//NotesSearchTest();
 		//RemoveAllRemoveSingleTest();
 		//CreateHighlightSimpleTest();
-		CreateHighlightAllColors();
+		//CreateHighlightAllColors();
 		
 		
 		//Bug in selendroid - test should pass but it needs work
@@ -441,7 +441,7 @@ public class GospelStart {
 		Thread.sleep(7000);
 
 		//First Page
-		checkTextByXpath("StartPageMiddleTitle", "New in version 3.2.6");
+		checkTextByXpath("StartPageMiddleTitle", "New in version 3.2.7");
 		checkTextByID("StartPageText", "Fixed various bugs and stability issues");
 		clickButtonByID("BottomButton");
 		Thread.sleep(4000);
@@ -681,7 +681,7 @@ public class GospelStart {
 	 */
 	public void DownloadGeneralConference() throws Exception {
 		clickButtonByXpath("GeneralConference");
-		Thread.sleep(6000);
+		Thread.sleep(15000);
 		clickButtonByXpathDownload("October2013");
 		Thread.sleep(1000);
 		clickButtonByXpathTitleName("Welcome to Conference");
