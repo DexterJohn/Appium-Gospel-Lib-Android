@@ -15,79 +15,6 @@ import java.util.Properties;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileElement;
-//import io.appium.java_client.android.AndroidDriver;
-//import io.appium.java_client.AppiumDriver;
-//import io.appium.java_client.android.AndroidDriver;
-//import io.selendroid.SelendroidCapabilities;
-//import io.selendroid.SelendroidDriver;
-import io.selendroid.SelendroidKeys;
-//import io.selendroid.exceptions.NoSuchElementException;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.Assert;
@@ -103,7 +30,7 @@ import org.openqa.selenium.Keys;
 //import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.ScreenOrientation;
-//import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.HasTouchScreen;
@@ -115,8 +42,13 @@ import org.openqa.selenium.remote.RemoteTouchScreen;
 //import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.MobileElement;
+import io.appium.java_client.android.AndroidDriver;
 //Not used yet
 //import org.openqa.selenium.WebElement;
+import io.selendroid.SelendroidKeys;
 
 /** GospelStart
  * Used to test Android Gospel Library
@@ -128,9 +60,10 @@ public class GospelStart {
 	//Selendroid 
 	//private WebDriver driver = null;
 	private Properties prop;
+	AppiumDriver<WebElement> driver;
 	//Appium
 	//private AndroidDriver driver;
-	AppiumSwipeableDriver driver;
+	//AppiumSwipeableDriver driver;
 	TouchActions touch;
 
 	//Selendroid way
@@ -154,53 +87,42 @@ public class GospelStart {
         //File appDir = new File(classpathRoot, "..\\..\\..\\..\\Selenium");
         //MAC Path
         File appDir = new File(classpathRoot, "../../../Selenium");
-        File app = new File(appDir, "gospel-library-release-20150706-1930.apk");
+        File app = new File(appDir, "gospel-library-preview-20160714-1914.apk");
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("platformName", "Android");
         
-        // ************** Devices ***************
-        
-        //Samsung Galaxy Tab
-        capabilities.setCapability("deviceName","41031b0b89e93163");
-        //HTC Nexus 9
-        //capabilities.setCapability("deviceName","HT4ASJT02851");
-        //Nexus 5
-        //capabilities.setCapability("deviceName","03aadbed215c8e5f");
-        // Android Emulator
-        //capabilities.setCapability("deviceName","Android Emulator");
-        //Samsung Galaxy Note 4 
-        //capabilities.setCapability("deviceName","751bc6f2");
-
-        //Nexus 4 
-        //capabilities.setCapability("deviceName","0074a44f54c7289b");
         
         
-        capabilities.setCapability("automationName","selendroid");
+        //capabilities.setCapability("automationName","Android");
         capabilities.setCapability("newCommandTimeout","600");
-        capabilities.setCapability("platformVersion", "4.4");
+       // capabilities.setCapability("platformVersion", "4.4");
         capabilities.setCapability("app", app.getAbsolutePath());
-        capabilities.setCapability("appPackage", "org.lds.ldssa");
-        capabilities.setCapability("appActivity", "org.lds.ldssa.Main");
+        capabilities.setCapability("appPackage", "org.lds.ldssa.preview");
+        //capabilities.setCapability("appActivity", "org.lds.ldssa.preview");
         //driver = new AndroidDriver(new URL("http://127.0.0.1:4444/wd/hub"), capabilities);
-        driver = new AppiumSwipeableDriver(new URL("http://127.0.0.1:4444/wd/hub"),capabilities);
-        touch = new TouchActions(driver);
+        driver = new AndroidDriver<WebElement>(new URL("http://127.0.0.1:4444/wd/hub"), capabilities);
+        //AndroidDriver driver = new AndroidDriver(new URL("http://127.0.0.1:4444/wd/hub"), capabilities);
+        //driver = new AppiumSwipeableDriver(new URL("http://127.0.0.1:4444/wd/hub"),capabilities);
+        //touch = new TouchActions(driver);
 
     }	
 
 	
-    /*
+    
 	@Test
 	public void simpleTest() throws Exception {
 		firstPages();
 		//justForTesting();
 		
-		//ScriptuesOldTestamentTest();
-		//ScriptuesNewTestamentTest();
-		//ScriptuesBookOfMormon();
-		//ScripturesDoctrineAndCovenants();
-		//ScripturesPearlOfGreatPrice();
+		ScriptuesOldTestamentTest();
+		ScriptuesNewTestamentTest();
+		ScriptuesBookOfMormon();
+		ScripturesDoctrineAndCovenants();
+		ScripturesPearlOfGreatPrice();
+		
+		
 		//NotesSyncTest();
-		DownloadGeneralConference();
+		//DownloadGeneralConference();
 		//DownloadAllPresidents();
 		//BookMarkSimpleTest();
 		//BookMarkUpdateTest();
@@ -224,7 +146,7 @@ public class GospelStart {
 		//SearchAutoFillAndHistoryTest();
 		
 	}
-	*/
+	
 
 	public void justForTesting() throws Exception {
 		int myCheck;
@@ -275,7 +197,7 @@ public class GospelStart {
 	}
 		
 	
-	
+	/*
 	
     @Rule
     public Retry retry = new Retry(3);
@@ -424,7 +346,7 @@ public class GospelStart {
 		CreateHighlightAllColors();
 	}
 	
-	
+	*/
 	
 //**************************************************************
 //**************** Start of tests ******************************
@@ -440,6 +362,14 @@ public class GospelStart {
 		int myCheck;
 		Thread.sleep(7000);
 
+		//checkTextByXpath("AlertTitle", "**IMPORTANT—PLEASE READ CAREFULLY**");
+		clickButtonByID("OKButton");
+		
+		sendTextbyID("Username", "zautomobile2");
+		sendTextbyID("Password", "ldsM0b1l3");
+		clickButtonByXpath("SignInButtonXpath");
+
+		/* ------ Not Displayed anymore --------
 		//First Page
 		checkTextByXpath("StartPageMiddleTitle", "New in version 3.2.7");
 		checkTextByID("StartPageText", "Fixed various bugs and stability issues");
@@ -469,6 +399,8 @@ public class GospelStart {
 		clickButtonByID("BottomButton");
 		Thread.sleep(5000);
 		driver.rotate(ScreenOrientation.LANDSCAPE);
+		
+		*/
 	}
 
 	/** ScriptuesOldTestamentTest()
@@ -478,12 +410,15 @@ public class GospelStart {
 	 */
 	public void ScriptuesOldTestamentTest() throws Exception {
 		goToChapter("OldTestament", "Genesis", "Chapter1");
-		checkScriptureText("1", "1 In the abeginning bGod ccreated the dheaven and the eearth", "WEBVIEW_2" );
+		Thread.sleep(3000);
+		//checkScriptureText("1", "1 In the abeginning bGod ccreated the dheaven and the eearth", "WEBVIEW_2" );
+		checkScriptureText("1", "1 In the a beginningb Godc createdthe d heaven and the e earth.", "WEBVIEW_2" );
+		
 		
 		//Swipe to chapter 2
 		flickRightToLeft();
 		Thread.sleep(3000);
-		checkScriptureText("1", "1 Thus the heavens and the aearth", "WEBVIEW_1" );
+		checkScriptureText("1", "1 Thus the heavens and the a earthwere finished, and all the b host of them.", "WEBVIEW_1" );
 		
 		//Swipe to chapter 5
 		for (int x = 1 ; x < 4 ; x++ ) {
@@ -491,17 +426,18 @@ public class GospelStart {
 			Thread.sleep(3000);
 		}
 		//Should be on chapter 5
-		checkScriptureText("1", "1 This is the abook of the bgenerations", "WEBVIEW_1" );
-		checkScriptureText("32", "32 And Noah was five hundred years old:", "WEBVIEW_1" );
+		checkScriptureText("1", "1 This is the a book of theb generations of Adam. In the day that God created man, in thec likeness of God d made he him;", "WEBVIEW_1" );
+		checkScriptureText("32", "32 And Noah was five hundred years old: and Noah a begatb Shem, Ham, and Japheth.", "WEBVIEW_1" );
 	
 		//Swipe back to chapter 4
 		flickLeftToRight();
 		Thread.sleep(3000);
-		checkScriptureText("1", "1 And Adam knew Eve his wife; and she conceived, and bare aCain", "WEBVIEW_2" );
+		checkScriptureText("1", "And Adam knew Eve his wife; and she conceived, and bare a Cain, and said, I have gotten a man from the Lord.", "WEBVIEW_2" );
 		
 		//Go back to the home page
-		clickButtonByID("Home");
-		
+		goBackToLibrary();
+
+
 	}
 	
 	/** ScriptuesNewTestamentTest()
@@ -511,22 +447,22 @@ public class GospelStart {
 	 */
 	public void ScriptuesNewTestamentTest() throws Exception {
 		goToChapter("NewTestament", "Luke", "Chapter1");
-		checkScriptureText("1", "1 aForasmuch as bmany have taken in hand to set", "WEBVIEW_2" );
+		checkScriptureText("1", "1 a Forasmuch as b many have taken in hand to set forth in order a declaration of those things c whichare most surely believed among us,", "WEBVIEW_2" );
 		
 		flickRightToLeft();
 		Thread.sleep(3000);
-		checkScriptureText("1", "1 And it came to pass in those days, that there", "WEBVIEW_1" );
+		checkScriptureText("1", "1 And it came to pass in those days, that there went out a decree from Cæsar Augustus, that all a the worldshould be b taxed.", "WEBVIEW_1" );
 		
 		for (int x = 1 ; x < 4 ; x++ ) {
 			flickRightToLeft();
 			Thread.sleep(3000);
 		}
 		//Should be on chapter 5
-		checkScriptureText("1", "1 And it came to pass, that, as the people pressed upon him", "WEBVIEW_1" );
-		checkScriptureText("39", "39 No man also having drunk old wine", "WEBVIEW_1" );
+		checkScriptureText("1", "1 And it came to pass, that, as the people pressed upon him to hear the word of God, he stood by the lake of Gennesaret,", "WEBVIEW_1" );
+		checkScriptureText("39", "39 No man also having drunk oldwinea straightway desireth new: for he saith, The old is better.", "WEBVIEW_1" );
 
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 
 	}
 	
@@ -537,10 +473,10 @@ public class GospelStart {
 	 */
 	public void ScriptuesBookOfMormon() throws Exception {
 		goToChapter("BookOfMormon", "1Nephi", "Chapter3");
-		checkScriptureText("7", "I awill go and do the things which the Lord hath commanded", "WEBVIEW_2" );
+		checkScriptureText("7", "7 And it came to pass that I, Nephi, said unto my father: I a will go and do the things which the Lord hath commanded, for I know that the Lord giveth no", "WEBVIEW_2" );
 
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 	}
 	
 	/** ScripturesDoctrineAndCovenants()
@@ -549,11 +485,11 @@ public class GospelStart {
 	 * @throws Exception
 	 */
 	public void ScripturesDoctrineAndCovenants() throws Exception {
-		goToChapter("DoctrineAndCovenants", "none", "Chapter4");
-		checkScriptureText("1", "1 Now behold, a amarvelous work is about to come forth among the children of men.", "WEBVIEW_2" );
+		goToChapter("DoctrineAndCovenants", "none", "4");
+		checkScriptureText("1", "1 Now behold, a a marvelous workis about to come forth among the children of men.", "WEBVIEW_2" );
 
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 	
 	}
 	
@@ -564,10 +500,10 @@ public class GospelStart {
 	 */
 	public void ScripturesPearlOfGreatPrice() throws Exception {
 		goToChapter("PearlOfGreatPrice", "Moses", "Chapter1");
-		checkScriptureText("1", "1 The words of God, which he aspake unto Moses at a time when Moses was", "WEBVIEW_2" );
+		checkScriptureText("1", "1 The words of God, which hea spake unto Moses at a time when Moses was caught up into an exceedingly high b mountain,", "WEBVIEW_2" );
 
 		//Go back to the home page
-		clickButtonByID("Home");	
+		goBackToLibrary();	
 	}
 	
 	/** NotesSyncTest()
@@ -619,7 +555,7 @@ public class GospelStart {
 		Thread.sleep(2000);
 		
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 		
 		
 		//Sleeping for a while to see if the login works. 
@@ -696,7 +632,7 @@ public class GospelStart {
 		checkMagazineText("p5", "The Apostle Peter wrote that disciples of Jesus Christ", "WEBVIEW_2" );
 		Thread.sleep(1000);
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 		Thread.sleep(1000);
 	}
 	
@@ -749,7 +685,7 @@ public class GospelStart {
 		clickSpinnerItem("TeachingsOfPresidentsSpinner");
 		Thread.sleep(1000);
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 		Thread.sleep(1000);
 	}
 	
@@ -772,7 +708,7 @@ public class GospelStart {
 		clearAnnotationMessage();
 
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 		Thread.sleep(1000);
 
 		//Go to the Bookmark and check to see if we are in the right place
@@ -787,7 +723,7 @@ public class GospelStart {
 		clickButtonByXpathMenuBookMarkTitleReference("Delete" , "Job 1");
 
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 		Thread.sleep(1000);	
 		
 		//Make sure the Bookmark is deleted
@@ -796,7 +732,7 @@ public class GospelStart {
 		pressBackKey();
 		
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 		Thread.sleep(1000);	
 	}
 	
@@ -818,7 +754,7 @@ public class GospelStart {
 		clearAnnotationMessage();
 
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 		Thread.sleep(1000);
 		
 		//Go to the Bookmark and check to see if we are in the right place
@@ -840,7 +776,7 @@ public class GospelStart {
 		clickButtonByXpathMenuBookMarkTitleReference("Update" , "Alma 2");
 
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 		Thread.sleep(1000);
 		
 		//Go to the Bookmark and check to see if we are in the right place
@@ -850,7 +786,7 @@ public class GospelStart {
 		checkScriptureText("1", "1 Now it came to pass in the sixth year of the reign", "WEBVIEW_2" );
 		
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 		Thread.sleep(1000);	
 		
 		//Delete the Bookmark
@@ -865,7 +801,7 @@ public class GospelStart {
 		pressBackKey();
 		
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 		Thread.sleep(1000);	
 		
 	}
@@ -889,7 +825,7 @@ public class GospelStart {
 		clearAnnotationMessage();
 
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 		Thread.sleep(1000);
 		
 		//Go to the Bookmark and check to see if we are in the right place
@@ -912,7 +848,7 @@ public class GospelStart {
 		clickButtonByXpathMenuBookMarkTitleReference("Update" , "My Bookmark");
 
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 		Thread.sleep(1000);
 		
 		//Go to the Bookmark and check to see if we are in the right place
@@ -923,7 +859,7 @@ public class GospelStart {
 		checkScriptureText("1", "1 aTake heed that ye do not your balms before men", "WEBVIEW_2" );
 		
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 		Thread.sleep(1000);	
 		
 		//Delete the Bookmark
@@ -938,7 +874,7 @@ public class GospelStart {
 		pressBackKey();
 		
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 		Thread.sleep(1000);	
 	}
 	
@@ -951,12 +887,12 @@ public class GospelStart {
 		goToChapter("NewTestament", "Romans", "Chapter10");
 		
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 		
 		goToChapter("BookOfMormon", "Helaman", "Chapter7");
 		
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 		
 		Thread.sleep(1000);
 		clickButtonByXpath("TeachingsOfPresidents"); 
@@ -1002,7 +938,7 @@ public class GospelStart {
 		
 		Thread.sleep(1000);
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 	}
 	
 	/** ScreensSimpleTest()
@@ -1051,7 +987,7 @@ public class GospelStart {
 		checkScriptureText("1", "1 Behold, now it came to pass in the sixty and ninth year of the", "WEBVIEW_2" );
 		
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 		Thread.sleep(1000);
 	}
 	
@@ -1131,7 +1067,7 @@ public class GospelStart {
 		Thread.sleep(1000);
 		
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 	}
 	
 	/** RelatedContentSimpleTest()
@@ -1160,7 +1096,7 @@ public class GospelStart {
 		Thread.sleep(2000);
 		clickButtonByID("menuReleated");
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 		Thread.sleep(1000);
 	}
 	
@@ -1260,7 +1196,7 @@ public class GospelStart {
 		checkTextViewByXpath("Jesus Turns Water into Wine (2:26)");
 		
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 	}
 	
 	/** CustomCollectionSimpleTest()
@@ -1388,7 +1324,7 @@ public class GospelStart {
 		Thread.sleep(1000);
 		
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 		
 		//**********************
 		//2nd custom collection
@@ -1417,7 +1353,7 @@ public class GospelStart {
 		Thread.sleep(1000);
 		
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 		
 		//**********************
 		//3rd custom collection
@@ -1448,7 +1384,7 @@ public class GospelStart {
 		Thread.sleep(1000);
 		
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 		
 		
 		//***********************
@@ -1461,7 +1397,7 @@ public class GospelStart {
 		checkTextViewByXpath("Bible Photographs");
 		Thread.sleep(1000);
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 		
 		//***********************
 		// Check Collection2
@@ -1473,7 +1409,7 @@ public class GospelStart {
 		checkTextViewByXpath("Book of Mormon");
 		Thread.sleep(1000);
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 		
 		
 		//***********************
@@ -1485,7 +1421,7 @@ public class GospelStart {
 		checkTextViewByXpath("New Testament Class Member Study Guide");
 		Thread.sleep(1000);
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 		
 		
 		//***********************
@@ -1564,7 +1500,7 @@ public class GospelStart {
 		checkNoHighlight("10260283822508721500", "WEBVIEW_1" );
 	
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 		Thread.sleep(3000);
 		//Log in then check the highlight again
 		syncLogIn("zautomobile2", "ldsM0b1l3");		
@@ -1601,7 +1537,7 @@ public class GospelStart {
 		Thread.sleep(1000);
 		
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 		
 	}
 	
@@ -1771,7 +1707,7 @@ public class GospelStart {
 		Thread.sleep(1000);
 		
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 				
 	}
 	
@@ -1877,7 +1813,7 @@ public class GospelStart {
 		*/
 		
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 		
 	}
 	
@@ -1932,7 +1868,7 @@ public class GospelStart {
 		clickButtonByID("SearchDone");
 		Thread.sleep(1000);
 		
-		clickButtonByID("Home");
+		goBackToLibrary();
 		Thread.sleep(1000);	
 		
 	}
@@ -1980,7 +1916,7 @@ public class GospelStart {
 		clickButtonByID("SearchGoButton");
 		Thread.sleep(1000);
 		
-		clickButtonByID("Home");
+		goBackToLibrary();
 		Thread.sleep(1000);		
 		
 		//Go to a scripture and do another test - should have the older searches
@@ -1995,7 +1931,7 @@ public class GospelStart {
 		clickButtonByID("SearchDone");
 		Thread.sleep(1000);
 		
-		clickButtonByID("Home");
+		goBackToLibrary();
 		Thread.sleep(1000);	
 		
 	}
@@ -2043,7 +1979,7 @@ public class GospelStart {
 		clickButtonByID("HighlightDone");
 		Thread.sleep(1000);
 		
-		clickButtonByID("Home");
+		goBackToLibrary();
 		Thread.sleep(1000);	
 		clickButtonByXpath("Notes");
 		Thread.sleep(2000);
@@ -2054,7 +1990,7 @@ public class GospelStart {
 		checkNotesByID("MarkedSource", "Jacob 1, Book of Mormon");
 		Thread.sleep(1000);
 		
-		clickButtonByID("Home");
+		goBackToLibrary();
 		Thread.sleep(1000);	
 		
 		//Delete the marked scriptures
@@ -2068,7 +2004,7 @@ public class GospelStart {
 		Thread.sleep(1000);
 		
 		
-		clickButtonByID("Home");
+		goBackToLibrary();
 		Thread.sleep(1000);	
 	}
 	
@@ -2252,7 +2188,7 @@ public class GospelStart {
 		Thread.sleep(1000);
 		
 		//Check the highlights under notes
-		clickButtonByID("Home");
+		goBackToLibrary();
 		Thread.sleep(1000);	
 		clickButtonByXpath("Notes");
 		Thread.sleep(2000);
@@ -2272,7 +2208,7 @@ public class GospelStart {
 		checkNotesByID("MarkedSource", "Genesis 9:1");
 		Thread.sleep(1000);
 		
-		clickButtonByID("Home");
+		goBackToLibrary();
 		Thread.sleep(1000);	
 		
 		//Delete the marked scriptures
@@ -2293,7 +2229,7 @@ public class GospelStart {
 		clickButtonByID("MenuItemDelete");
 		Thread.sleep(1000);
 		
-		clickButtonByID("Home");
+		goBackToLibrary();
 		Thread.sleep(1000);	
 			
 	}
@@ -2508,6 +2444,7 @@ public class GospelStart {
 	 * When you first click on a link the current page will be WEBVIEW_2 after you flick to another page 
 	 * the current page will be WEBVIEW_1
 	 */
+	/*
 	private void checkScriptureText(String textElement, String textToCheck, String WebView ) {
 		String scriptureText;
 		WebElement element;
@@ -2525,6 +2462,21 @@ public class GospelStart {
 		
 		
 		//Check to see that the text is correct
+		Assert.assertThat(scriptureText, CoreMatchers.containsString(textToCheck));
+	}*/
+	
+	private void checkScriptureText(String textElement, String textToCheck, String WebView ) {
+		String scriptureText;
+		WebElement element;
+		waitForContentToLoad();
+		
+		//element = driver.findElement(By.id(textElement));
+		element = driver.findElement(By.xpath("//android.view.View[@resource-id=\"p" + textElement + "\"]"));
+		//scriptureText = element.getText();	
+		scriptureText = element.getAttribute("name");
+
+		//Check to see that the text is correct
+		//System.out.println("FOUND TEXT: " + scriptureText);
 		Assert.assertThat(scriptureText, CoreMatchers.containsString(textToCheck));
 	}
 
@@ -2741,7 +2693,11 @@ public class GospelStart {
 	 * @param textElement - ID of element must be in uiMap
 	 */
 	private void clickButtonByID(String textElement ) {
-		driver.findElement(By.id(this.prop.getProperty(textElement))).click();
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		WebElement myElement = wait.until(ExpectedConditions.elementToBeClickable(By.id(this.prop.getProperty(textElement))));
+		myElement.click();
+		
+		//driver.findElement(By.id(this.prop.getProperty(textElement))).click();
 	}
 	
 	//TODO: Need to test more, I don't think it is waiting in all cases. 
@@ -2751,12 +2707,12 @@ public class GospelStart {
 	 * @param textElement - Xpath of the element must be in uiMap
 	 */
 	private void clickButtonByXpath(String textElement ) {
-		int myCheck;
-		int myCounter = 0;
-		WebDriverWait wait = new WebDriverWait(driver, 20);
-
+		//int myCheck;
+		//int myCounter = 0;
+		WebDriverWait wait = new WebDriverWait(driver, 10);
 		
 		//Scroll down if element is not found.
+		/*
 		myCheck = checkElementXpathReturn(textElement);
 		//System.out.println("Before While loop - Check: " + myCheck);
 		while ((myCheck == 0) && (myCounter < 5 )) {
@@ -2766,7 +2722,7 @@ public class GospelStart {
 			System.out.println(textElement);
 			System.out.println("Counter " + myCounter);
 			System.out.println("My Check: " + myCheck);
-		}
+		}*/
 		
 		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(this.prop.getProperty(textElement))));
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(this.prop.getProperty(textElement) + "/../download_progress")));
@@ -2790,7 +2746,7 @@ public class GospelStart {
 		//WebElement element;
 		//Click the Element
 		driver.findElement(By.xpath(this.prop.getProperty(textElement))).click();
-		WebDriverWait wait = new WebDriverWait(driver, 20);
+		WebDriverWait wait = new WebDriverWait(driver, 10);
 		//Wait for the element to be clickable
 		//wait.until(ExpectedConditions.elementToBeClickable(By.xpath(this.prop.getProperty(textElement))));
 		//Wait for the download icon to be invisible 
@@ -2814,7 +2770,7 @@ public class GospelStart {
 	 */
 	private void clickButtonByXpathTitleName(String textElement ) {
 		//WebElement element;
-		WebDriverWait wait = new WebDriverWait(driver, 20);
+		WebDriverWait wait = new WebDriverWait(driver, 10);
 		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//TextView[@value='" + textElement + "']")));
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//TextView[@value='" + textElement + "']" + "/download_progress")));
 		
@@ -3025,12 +2981,21 @@ public class GospelStart {
 	 * 
 	 */
 	private void flickRightToLeft(){
-		WebElement pages = driver.findElement(By.id("pager"));
-		//Smaller Devices
-		//TouchActions flick = new TouchActions(driver).flick(pages, -1500, 0, 0);
-		//Larger devices - seems to work for larger and smaller devices
-		TouchActions flick = new TouchActions(driver).flick(pages, -2900, 0, 0);
-		flick.perform();
+		int pageSizeWidth;
+		int pageSizeHeigth;
+		
+		int pageStartX;
+		int pageStartY;
+
+		pageSizeWidth = driver.manage().window().getSize().getWidth();
+		pageSizeHeigth = driver.manage().window().getSize().getHeight();
+		
+		pageStartX = pageSizeWidth / 2;
+		pageStartX = (pageStartX / 2) + pageStartX;
+		pageStartY = pageSizeHeigth / 2;
+		
+		driver.swipe(pageStartX, pageStartY, 20, pageStartY, 500);
+
 	}
 	
 	/** flickLeftToRight()
@@ -3038,9 +3003,21 @@ public class GospelStart {
 	 * 
 	 */
 	private void flickLeftToRight(){
-		WebElement pages = driver.findElement(By.id("pager"));
-		TouchActions flick = new TouchActions(driver).flick(pages, 5500, 0, 0);
-		flick.perform();
+		int pageSizeWidth;
+		int pageSizeHeigth;
+		
+		int pageStartX;
+		int pageEndX;
+		int pageStartY;
+
+		pageSizeWidth = driver.manage().window().getSize().getWidth();
+		pageSizeHeigth = driver.manage().window().getSize().getHeight();
+		
+		pageStartX = 20;
+		pageEndX = pageSizeWidth / 2;
+		pageStartY = pageSizeHeigth / 2;
+		
+		driver.swipe(pageStartX, pageStartY, pageEndX, pageStartY, 500);
 	}
 
 	/** flickUpOrDown(int yNumber)
@@ -3091,7 +3068,7 @@ public class GospelStart {
 		int myCheck;
 		int myCounter = 0;
 		textElement = "//*[@value='" + textElement + "']";
-		//WebDriverWait wait = new WebDriverWait(driver, 20);
+		//WebDriverWait wait = new WebDriverWait(driver, 10);
 
 		//Scroll down if element is not found.
 		myCheck = checkElementXpathReturnAllText(textElement);
@@ -3155,6 +3132,8 @@ public class GospelStart {
 	 * @param scrollDistance - Distance to scroll
 	 */
 	private void scrollDownDistance(int scrollDistance ){
+		
+		
 		//WebElement myElement = driver.findElement(By.xpath("//TextView[@value='']"));
 		//WebElement myElement = driver.findElement(By.id("pager"));
 		TouchActions actions = new TouchActions(driver);
@@ -3297,8 +3276,9 @@ public class GospelStart {
 	 */
 	private void waitForContentToLoad() {
 		//WebElement element;
-		WebDriverWait wait = new WebDriverWait(driver, 20);
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//ContentViewPager/ContentWebView[3]")));
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		//wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//ContentViewPager/ContentWebView[3]")));
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.id("pager")));
 	}
 	
 	/** waitForContentToLoadMag()
@@ -3307,7 +3287,7 @@ public class GospelStart {
 	 */
 	private void waitForContentToLoadMag() {
 		//WebElement element;
-		WebDriverWait wait = new WebDriverWait(driver, 20);
+		WebDriverWait wait = new WebDriverWait(driver, 10);
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//ContentViewPager/ContentWebView[2]")));
 	}
 	
@@ -3366,7 +3346,7 @@ public class GospelStart {
 		Thread.sleep(2000);
 		
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 	}
 	
 
@@ -3382,6 +3362,7 @@ public class GospelStart {
 	private void goToChapter(String scriptureName, String bookName, String chapter)  throws Exception {
 		int myCheck;
 		int myCounter = 1;
+		String DandCChapter; 
 		Thread.sleep(2000);
 		clickButtonByXpath("Scriptures");
 		Thread.sleep(2000);
@@ -3409,11 +3390,17 @@ public class GospelStart {
 			}
 			
 			clickButtonByXpath(bookName);
+			Thread.sleep(1000);
+			clickButtonByXpath(chapter);
+			Thread.sleep(1000);
 			
+		} else {
+			Thread.sleep(1000);
+			DandCChapter = "Doctrine and Covenants " + chapter;
+			//driver.scrollTo(DandCChapter);
+			driver.findElement(By.xpath("//android.widget.TextView[@text='" + DandCChapter + "']")).click();
+			Thread.sleep(1000);
 		}
-		Thread.sleep(1000);
-		clickButtonByXpath(chapter);
-		Thread.sleep(1000);
 	
 	}
 	
@@ -3439,7 +3426,7 @@ public class GospelStart {
 		
 		checkTextViewByXpath(notebookName);
 		//Go back to the home page
-		clickButtonByID("Home");
+		goBackToLibrary();
 	}
 	
 	/** enterNewJournal()
@@ -3476,6 +3463,11 @@ public class GospelStart {
 			clickButtonByID("AlertNoThanks");
 			Thread.sleep(1000);
 		}
+	}
+	
+	private void goBackToLibrary() throws Exception {
+		clickButtonByID("DropDownArrow");
+		clickButtonByXpath("DropDownLibrary");
 	}
 	
 
